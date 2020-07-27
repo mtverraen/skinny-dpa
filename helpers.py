@@ -75,9 +75,7 @@ def plot_multiple_attacks(plot_0,plot_1,plot_2,plot_3, label_0,label_1,label_2,l
     plt.savefig(outfile)
 
 def plot_single_attack(plot_0, label_0, outfile):
-    plot_label= "TK1_1 recovery rate | experiments: "+ str(len(keys))+", std: "+str(std)
     plt.figure()
-    plt.title(plot_label)
     plt.ylabel('Success rate')
     plt.xlabel('Traces')
     plt.plot(np.array(plot_0), label=label_0, c="black")
