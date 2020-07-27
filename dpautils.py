@@ -65,6 +65,7 @@ def compute_v(sbox_index,list_of_interm_p):
         V.append(row)
     return V
 
+# Maximum-log-likelihood distinguisher
 def distinguisher(V,traces,target_nibble):
     std=0.5
     scores=[]
@@ -78,6 +79,7 @@ def distinguisher(V,traces,target_nibble):
         scores.append(score)
     return scores
 
+# MLL via multivariate distribution of all same-key-dependent s-boxes
 def distinguisher_multivariate(V,T,kdi):
     V_0=V[0]
     V_1=V[1]
@@ -99,9 +101,27 @@ def distinguisher_multivariate(V,T,kdi):
         scores.append(score)
     return scores
 
+def simultanous_atk(T,clear_text_nibbles,target_nibble):
+    kdi=helpers.determine_kdi(target_nibble) 
+    V = []
+    scores=[]
+    for ind in kdi:
+        V.append(np.matrix(compute_v(ind,clear_text_nibbles)))
+    scores=distinguisher_multivariate(V,T,kdi)
+    
+    return(scores.index(max(scores)))
 
-def majority_vote_selector(candidates):
-    votes_table = helpers.majority_vote(candidates)
+def majority_vote_atk(T,clear_text_nibbles,target_nibble):
+    kdi=helpers.determine_kdi(target_nibble) 
+    V = []
+    scores=[]
+    for ind in kdi:
+        V.append(np.matrix(compute_v(ind,clear_text_nibbles)))
+        scores.append(distinguisher(V[kdi.index(ind)],T,ind))
+
+    argmax_scores = [score.index(max(score)) for score in scores] 
+
+    votes_table = helpers.majority_vote(argmax_scores)
     k_cand = max(votes_table,key=votes_table.get)
     
     if votes_table.get(k_cand) > 1:
@@ -109,41 +129,25 @@ def majority_vote_selector(candidates):
     else: 
         return -1 # else Discard voting
 
-def unanimous_selector(guesses):
-    if len(set(guesses))== 1:
-        return guesses[0]
+def unanimous_attack(T,clear_text_nibbles,target_nibble):
+    kdi=helpers.determine_kdi(target_nibble) 
+    V = []
+    scores=[]
+    for ind in kdi:
+        V.append(np.matrix(compute_v(ind,clear_text_nibbles)))
+        scores.append(distinguisher(V[kdi.index(ind)],T,ind))
+
+    argmax_scores = [score.index(max(score)) for score in scores] #Argmax of list of scores 
+
+    if len(set(argmax_scores))== 1:
+        return argmax_scores[0]
     else:
         return -1
 
-def plot_TK_recovery_rates(success_rate_unanimous,success_rate_majority_vote,success_rate_individual,succcess_rate_simultanous,outfile,sigma,keys):
-    # Plot the results of each experiment and save to file
-
-    fig, axs = plt.subplots(1,4,figsize=(28,7),sharey=True)
-    #fig.suptitle('success-discard rate')
-    plt.subplots_adjust(bottom=0.2)
-
-    axs[0].set_title('unanimous')
-    axs[1].set_title('majority vote')
-    axs[2].set_title('individual')
-    axs[3].set_title('simultanous')
-
-    axs[0].plot(np.array(success_rate_unanimous), label="valid and correct", c="red")
-    axs[1].plot(np.array(success_rate_majority_vote), label="valid and correct", c="red")
-    axs[2].plot(np.array(success_rate_individual), label="valid and correct", c="red")
+def individual_atk(T,clear_text_nibbles,target_nibble):
+    V = np.matrix(compute_v(target_nibble,clear_text_nibbles))
+    scores=distinguisher(V,T,target_nibble)
     
-    std_string="experiments: "+str(len(keys))+" \n std: "+ str(sigma)
-    axs[3].plot([], [], ' ', label=std_string) #dirty hack to get std into legend
-    axs[3].plot(np.array(succcess_rate_simultanous), label="valid and correct", c="red")
-    
+    return(scores.index(max(scores)))
 
-    axs[3].legend(bbox_to_anchor=(1.1, 1.05))
 
-    for ax in axs.flat:
-        ax.set(xlabel='traces', ylabel='probability')
-
-    # Hide x labels and tick labels for top plots and y ticks for right plots.
-    for ax in axs.flat:
-        ax.label_outer()
-
-    fig.savefig(outfile, bbox_inches='tight')  
-    
