@@ -2,6 +2,7 @@ import random
 import string
 import matplotlib
 import matplotlib.pyplot as plt
+from matplotlib.ticker import StrMethodFormatter
 import numpy as np
 
 
@@ -61,6 +62,8 @@ def recover_pk(val):
     return internal_state
     
 def plot_multiple_attacks(plot_0,plot_1,plot_2,plot_3, label_0,label_1,label_2,label_3,outfile):
+
+    #xaxs=np.array(list(range(0,len(plot_0),1)))
     #plot_label= "TK1_0 recovery rate | experiments: "+ str(len(keys))+", std: "+str(std)
     plt.figure()
     plt.ylabel('Success rate')
@@ -69,7 +72,8 @@ def plot_multiple_attacks(plot_0,plot_1,plot_2,plot_3, label_0,label_1,label_2,l
     plt.plot(np.array(plot_1), label=label_1, c="blue")
     plt.plot(np.array(plot_2), label=label_2, c="green")
     plt.plot(np.array(plot_3), label=label_3, c="black")
-
+    plt.grid(axis='y')
+    plt.gca().xaxis.set_major_formatter(StrMethodFormatter('{x:,.0f}')) # No decimal places
     plt.legend()
     plt.draw()
     plt.savefig(outfile)
