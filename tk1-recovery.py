@@ -33,7 +33,7 @@ P=helpers.gen_plaintexts(N)
 
 intermediate_values=[]
 for key in keys:
-    val=dpautils.compute_intemediate_values(P,int(keys[0]))
+    val=dpautils.compute_intemediate_values(P,int(key))
     interm_values=val[0]
     clear_text=val[1]
     TK1=val[2].A1
