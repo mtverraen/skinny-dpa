@@ -18,8 +18,6 @@ np.set_printoptions(threshold=sys.maxsize)
 std=float(sys.argv[1])
 number_of_experiments=int(sys.argv[2])
 
-#std=0.3
-#number_of_experiments=1
 keys=np.random.randint(2147483647, 9223372036854775807, size=number_of_experiments, dtype=np.int64)
 
 i=1
@@ -107,7 +105,8 @@ while True:
         required_traces.append(i)
         break
     i+=1
-
+    
+i=1
 while True:
     res=[]
     for key in keys:

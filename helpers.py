@@ -78,6 +78,24 @@ def plot_multiple_attacks(plot_0,plot_1,plot_2,plot_3, label_0,label_1,label_2,l
     plt.draw()
     plt.savefig(outfile)
 
+
+def plot_multiple_attacks(plot_0,plot_1,plot_2,plot_3, label_0,label_1,label_2,label_3,outfile):
+
+    #xaxs=np.array(list(range(0,len(plot_0),1)))
+    #plot_label= "TK1_0 recovery rate | experiments: "+ str(len(keys))+", std: "+str(std)
+    plt.figure()
+    plt.ylabel('Success rate')
+    plt.xlabel('Traces')
+    plt.plot(np.array(plot_0), label=label_0, c="red")
+    plt.plot(np.array(plot_1), label=label_1, c="blue")
+    plt.plot(np.array(plot_2), label=label_2, c="green")
+    plt.plot(np.array(plot_3), label=label_3, c="black")
+    plt.grid(axis='y')
+    plt.gca().xaxis.set_major_formatter(StrMethodFormatter('{x:,.0f}')) # No decimal places
+    plt.legend()
+    plt.draw()
+    plt.savefig(outfile)
+
 def plot_single_attack(plot_0, label_0, outfile):
     plt.figure()
     plt.ylabel('Success rate')
@@ -120,3 +138,16 @@ def plot_TK_recovery_rates(success_rate_unanimous,success_rate_majority_vote,suc
 
     fig.savefig(outfile, bbox_inches='tight')  
     
+def plot_required_traces(plot_0,plot_1,plot_2,plot_3, label_0,label_1,label_2,label_3,outfile,std):
+    plt.figure()
+    plt.ylabel('Traces')
+    plt.xlabel('σ')
+    plt.plot(std,np.array(plot_0), label=label_0, c="red")
+    plt.plot(std,np.array(plot_1), label=label_1, c="blue")
+    plt.plot(std,np.array(plot_2), label=label_2, c="green")
+    plt.plot(std,np.array(plot_3), label=label_3, c="black")
+    plt.grid(axis='y')
+    plt.gca().xaxis.set_major_formatter(StrMethodFormatter('{x:,.0f}')) # No decimal places
+    plt.legend()
+    plt.draw()
+    plt.savefig(outfile)
