@@ -22,8 +22,8 @@ np.set_printoptions(threshold=sys.maxsize)
 #number_of_experiments=int(sys.argv[3])
 
 N=15
-std=0.5
-number_of_experiments=2
+std=1
+number_of_experiments=50
 
 TK1_0=[0,1,2,3] # 3x traces
 TK1_1=[4,5,6,7]

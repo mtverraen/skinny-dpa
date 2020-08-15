@@ -150,4 +150,54 @@ def individual_atk(T,clear_text_nibbles,target_nibble):
     
     return(scores.index(max(scores)))
 
+# Returning scores, no argmax
+# MLL via multivariate distribution of all same-key-dependent s-boxes
+
+def simultanous_atk_scores(T,clear_text_nibbles,target_nibble):
+    kdi=helpers.determine_kdi(target_nibble) 
+    V = []
+    for ind in kdi:
+        V.append(np.matrix(compute_v(ind,clear_text_nibbles)))
+    return distinguisher_multivariate(V,T,kdi)
+
+def majority_vote_atk_scores(T,clear_text_nibbles,target_nibble):
+    kdi=helpers.determine_kdi(target_nibble) 
+    V = []
+    
+    for ind in kdi:
+        V.append(np.matrix(compute_v(ind,clear_text_nibbles)))
+        scores.append(distinguisher(V[kdi.index(ind)],T,ind))
+
+    argmax_scores = [score.index(max(score)) for score in scores] 
+
+    votes_table = helpers.majority_vote(argmax_scores)
+    k_cand = max(votes_table,key=votes_table.get)
+    
+    if votes_table.get(k_cand) > 1:
+        return k_cand # If there are a winner, return winner
+    else: 
+        return -1 # else Discard voting
+
+def unanimous_attack_scores(T,clear_text_nibbles,target_nibble):
+    kdi=helpers.determine_kdi(target_nibble) 
+    V = []
+    scores=[]
+    for ind in kdi:
+        V.append(np.matrix(compute_v(ind,clear_text_nibbles)))
+        scores.append(distinguisher(V[kdi.index(ind)],T,ind))
+
+    a=np.matrix(scores)
+    
+    argmax_scores = [score.index(max(score)) for score in scores] #Argmax of list of scores 
+
+    if len(set(argmax_scores))== 1:
+        return a.sum(axis=0)
+    else:
+        return -1
+
+def individual_atk_scores(T,clear_text_nibbles,target_nibble):
+    V = np.matrix(compute_v(target_nibble,clear_text_nibbles))
+    return distinguisher(V,T,target_nibble)
+
+
 
