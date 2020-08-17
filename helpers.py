@@ -80,7 +80,10 @@ def plot_multiple_attacks(plot_0,plot_1,plot_2,plot_3, label_0,label_1,label_2,l
 
 
 def plot_multiple_attacks(plot_0,plot_1,plot_2,plot_3, label_0,label_1,label_2,label_3,outfile):
-
+    plot_0.insert(0, 0.0)
+    plot_1.insert(0, 0.0)
+    plot_2.insert(0, 0.0)
+    plot_3.insert(0, 0.0)
     #xaxs=np.array(list(range(0,len(plot_0),1)))
     #plot_label= "TK1_0 recovery rate | experiments: "+ str(len(keys))+", std: "+str(std)
     plt.figure()
