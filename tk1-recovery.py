@@ -141,7 +141,10 @@ for n in Ns:
             probs.append(0)
     individual_attack_success_rate_pr_n.append(np.average(probs))
 
+success_rates=[simultanous_success_rate_pr_n, majority_vote_success_rate_pr_n, unanimous_success_rate_pr_n, individual_attack_success_rate_pr_n]
+
 outfile="TK1-10-recovery-rate-std-"+str(std)+".png"
+np.save(outfile,success_rates)
 
 helpers.plot_multiple_attacks(simultanous_success_rate_pr_n, majority_vote_success_rate_pr_n, 
                  unanimous_success_rate_pr_n, individual_attack_success_rate_pr_n,
