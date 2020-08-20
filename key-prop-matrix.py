@@ -18,4 +18,3 @@ for j in range(32):
         tmp.append(m[p[i]])
     m=tmp
     
-
