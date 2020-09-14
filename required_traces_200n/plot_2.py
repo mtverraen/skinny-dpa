@@ -7,13 +7,13 @@ import math
 import sys
 from numpy import arange
 
-#std=[0.15,0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.6,0.65,0.7,0.75,0.8,0.85,0.9,0.95,1.0,1.05]
-std=arange(0.1, 1.5, 0.05)
-print(std)
+std=[0.1,0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.6,0.65,0.7,0.75,0.8,0.85,0.9,0.95,1.0,1.05]
+#std=arange(0.1, 1.5, 0.05)
+#print(std)
 
 requires_traces_for_s_rate=[]
 for s in std:
-    infile="requires_traces_"+str(s)+".npy"
+    infile="rt_"+str(s)+".npy"
     traces=np.load(infile)
     requires_traces_for_s_rate.append(traces)
 
@@ -34,7 +34,7 @@ plt.xlabel('σ')
 plt.plot(std,np.array(simultanous), label="simultanous", c="red")
 plt.plot(std,np.array(majority_vote), label="majority vote", c="blue")
 plt.plot(std,np.array(unanimous), label="unanimous", c="green")
-plt.plot(std,np.array(individual), label="individual", c="black")
+plt.plot(std,np.array(individual), label="standard", c="black")
 plt.grid(axis='y')
 #plt.gca().xaxis.set_major_formatter(StrMethodFormatter('{x:,.0f}')) # No decimal places
 plt.legend()

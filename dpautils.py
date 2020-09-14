@@ -193,7 +193,7 @@ def unanimous_attack_scores(T,clear_text_nibbles,target_nibble):
     if len(set(argmax_scores))== 1:
         return a.sum(axis=0)
     else:
-        return -1
+        return [-1]
 
 def individual_atk_scores(T,clear_text_nibbles,target_nibble):
     V = np.matrix(compute_v(target_nibble,clear_text_nibbles))

@@ -17,4 +17,6 @@ for j in range(32):
     for i in range(len(p)):
         tmp.append(m[p[i]])
     m=tmp
+
+
     
